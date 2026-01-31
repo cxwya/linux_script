@@ -72,7 +72,7 @@ select_docker_source() {
 
 # 主循环 - Docker 管理菜单
 while true; do
-  clear
+  # clear
   echo "======================"
   if check_docker_installed; then
     echo "✓ Docker 已安装：$(docker --version | head -1)"
