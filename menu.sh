@@ -5,7 +5,6 @@
 cd "$(dirname "$0")"
 
 while true; do
-  clear  # 清屏让菜单更清晰
   echo "======================"
   echo "请选择要执行的操作："
   echo "  1) 修改 SSH 端口"
