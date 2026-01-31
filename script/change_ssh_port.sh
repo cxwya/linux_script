@@ -81,7 +81,16 @@ get_valid_port() {
   done
 }
 
-echo "=== SSH 端口修改脚本开始运行 ==="
+echo "=== SSH 端口修改脚本 ==="
+echo "1) 修改端口"
+echo "0) 退出"
+echo "======================"
+read -p "请选择 (0/1): " start_choice
+
+if [ "$start_choice" = "0" ]; then
+  echo "已退出。"
+  exit 0
+fi
 
 # 获取目标端口（优先使用命令行参数）
 get_valid_port "$1"
