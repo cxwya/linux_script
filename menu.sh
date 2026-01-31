@@ -5,14 +5,15 @@
 cd "$(dirname "$0")"
 
 while true; do
+  clear  # 清屏让菜单更清晰
   echo "======================"
   echo "请选择要执行的操作："
   echo "  1) 修改 SSH 端口"
-  echo "  88) 退出"
+  echo "  0) 退出"
   echo "======================"
   
   # 强制从键盘设备读，避免管道污染
-  read -p "请输入数字: " choice </dev/tty
+  read -n -p "请输入数字: " choice </dev/tty
   echo    # 换行
   
   case "$choice" in
