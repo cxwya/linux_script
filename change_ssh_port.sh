@@ -51,7 +51,7 @@ get_valid_port() {
       first_arg=""      # 只使用一次命令行参数，后续改为手动输入
       echo "使用命令行传入端口：$port"
     else
-      read -p "请输入要修改成的 SSH 端口（例如 2222）: " port
+      read -p "请输入要修改成的 SSH 端口（例如 2222）: " port </dev/tty
     fi
 
     echo "你刚输入的端口是：$port"
