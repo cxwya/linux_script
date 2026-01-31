@@ -15,7 +15,7 @@ main_menu() {
     echo "  4) 检测脚本"
     echo "  0) 退出"
     echo "======================"
-    read -p "请输入数字 (0-3): " choice </dev/tty
+    read -p "请输入数字 (0-4): " choice </dev/tty
     echo
 
     case "$choice" in
