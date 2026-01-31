@@ -5,27 +5,30 @@
 cd "$(dirname "$0")"
 
 while true; do
+  clear  # 清屏让菜单更清晰
   echo "======================"
   echo "请选择要执行的操作："
   echo "  1) 修改 SSH 端口"
   echo "  88) 退出"
   echo "======================"
-  read -p "请输入数字并回车: " choice </dev/tty
-
+  
+  # 只读一个字符，并强制从键盘设备读，避免管道污染
+  read -n 1 -p "请输入数字: " choice </dev/tty
+  echo    # 换行
+  
   case "$choice" in
     1)
       echo "执行：修改 SSH 端口脚本..."
-      # 加上 bash 或直接执行（前提是子脚本有执行权限）
-      curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/change_ssh_port.sh | sudo bash
+      curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/change_ssh_port.sh | sudo bash
+      read -p "按回车返回菜单..."
       ;;
-    88)
-      echo "退出。"
+    0)
+      echo "已退出菜单。"
       exit 0
       ;;
     *)
-      echo "无效选项，请重新输入。"
+      echo "无效选项 '$choice'，请重新输入。"
+      read -p "按回车继续..."
       ;;
   esac
-
-  echo    # 每次执行完留一个空行，回到菜单
 done
