@@ -29,7 +29,7 @@ select_docker_source() {
     echo "  3) 自动检测（默认）"
     echo "  0) 返回 Docker 主菜单"
     echo "======================"
-    read -p "请输入数字 (0-3): " source_choice
+    read -p "请输入数字 (0-3): " source_choice </dev/tty ;;
     echo
 
     # 默认值处理
@@ -72,7 +72,7 @@ select_docker_source() {
 
 # 主循环 - Docker 管理菜单
 while true; do
-  # clear
+  clear
   echo "======================"
   if check_docker_installed; then
     echo "✓ Docker 已安装：$(docker --version | head -1)"
@@ -87,7 +87,7 @@ while true; do
   echo "  4) 停止服务"
   echo "  0) 退出"
   echo "======================"
-  read -p "请输入数字 (0-4): " choice
+  read -p "请输入数字 (0-4): " choice </dev/tty ;;
   echo
 
   case "$choice" in
@@ -97,7 +97,7 @@ while true; do
       if check_docker_installed; then
         while true; do
           echo "✓ Docker 已安装：$(docker --version | head -1)"
-          read -p "检测到已安装，是否卸载重装？(y/n) " confirm
+          read -p "检测到已安装，是否卸载重装？(y/n) " confirm </dev/tty ;;
           case "$confirm" in
           [Yy])
             echo "卸载 Docker..."
