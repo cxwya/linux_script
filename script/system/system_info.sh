@@ -39,14 +39,10 @@ elif systemctl is-active --quiet ssh 2>/dev/null; then
 else
   echo "   SSH 服务：未运行"
 fi
-
-printf "
-======================
-"
-printf "信息查看完成。
-"
-printf "
-======================
-"
-printf "按回车退出..."
-read -p ""
+echo
+echo "======================"
+echo "信息查看完成。"
+echo "======================"
+echo
+echo "按回车退出..."
+read -p "" </dev/tty
