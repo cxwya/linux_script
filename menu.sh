@@ -12,8 +12,8 @@ while true; do
   echo "  88) 退出"
   echo "======================"
   
-  # 只读一个字符，并强制从键盘设备读，避免管道污染
-  read -n 1 -p "请输入数字: " choice </dev/tty
+  # 强制从键盘设备读，避免管道污染
+  read -n -p "请输入数字: " choice </dev/tty
   echo    # 换行
   
   case "$choice" in
