@@ -10,7 +10,7 @@ while true; do
   echo "  1) 修改 SSH 端口"
   echo "  88) 退出"
   echo "======================"
-  read -p "请输入数字并回车: " choice
+  read -p "请输入数字并回车: " choice </dev/tty
 
   case "$choice" in
     1)
