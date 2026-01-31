@@ -1,34 +1,108 @@
 #!/bin/bash
-# 总控菜单脚本：根据用户选择执行不同子脚本
+# 带子菜单的总控脚本
 
-# 确保当前目录就是脚本所在目录
 cd "$(dirname "$0")"
 
-while true; do
-  clear  # 清屏让菜单更清晰
-  echo "======================"
-  echo "请选择要执行的操作："
-  echo "  1) 修改 SSH 端口"
-  echo "  0) 退出"
-  echo "======================"
-  
-  # 强制从键盘设备读，避免管道污染
-  read -n -p "请输入数字: " choice </dev/tty
-  echo    # 换行
-  
-  case "$choice" in
-    1)
-      echo "执行：修改 SSH 端口脚本..."
-      curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/change_ssh_port.sh | sudo bash
-      read -p "按回车返回菜单..."
-      ;;
-    0)
-      echo "已退出菜单。"
-      exit 0
-      ;;
-    *)
-      echo "无效选项 '$choice'，请重新输入。"
-      read -p "按回车继续..."
-      ;;
-  esac
-done
+# ===== 主菜单 =====
+main_menu() {
+  while true; do
+    clear
+    echo "======================"
+    echo "主菜单 - 请选择操作："
+    echo "  1) 系统管理"
+    echo "  2) Web 服务"
+    echo "  3) 备份管理" 
+    echo "  0) 退出"
+    echo "======================"
+    read -p "请输入数字 (0-3): " choice </dev/tty
+    echo
+
+    case "$choice" in
+      1) system_menu ;;
+      2) web_menu ;;
+      3) backup_menu ;;
+      0) echo "已退出。"; exit 0 ;;
+      *) echo "无效选项，请按回车重试..."; read -p "" </dev/tty ;;
+    esac
+  done
+}
+
+# ===== 系统管理 =====
+system_menu() {
+  while true; do
+    clear
+    echo "======================"
+    echo "系统管理子菜单："
+    echo "  1) 修改 SSH 端口"
+    echo "  2) 查看系统信息"
+    echo "  0) 返回主菜单"
+    echo "======================"
+    read -p "请选择 (0-2): " choice </dev/tty
+    echo
+
+    case "$choice" in
+      1) 
+        echo "执行：修改 SSH 端口..."
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/change_ssh_port.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
+      2)
+        echo "系统信息："
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/system_info.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
+      0) return ;;  # return 返回到调用者（主菜单）
+      *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
+    esac
+  done
+}
+
+# ===== Web 服务 =====
+web_menu() {
+  while true; do
+    clear
+    echo "======================"
+    echo "Web 服务菜单："
+    echo "  1) 安装 Docker"
+    echo "  2) 安装 Apache"
+    echo "  0) 返回主菜单"
+    echo "======================"
+    read -p "请选择 (0-2): " choice </dev/tty
+    echo
+
+    case "$choice" in
+      1) echo "执行：安装 Docker..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/docker_install.sh | sudo bash
+         read -p "按回车返回系统菜单..."
+         ;;
+      2) echo "执行：安装 Apache..."; bash ./install_apache.sh; read -p "按回车返回..." ;;
+      0) return ;;  # return 到主菜单
+      *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
+    esac
+  done
+}
+
+# ===== 备份 =====
+backup_menu() {
+  while true; do
+    clear
+    echo "======================"
+    echo "备份管理子菜单："
+    echo "  1) 备份数据库"
+    echo "  2) 备份配置文件"
+    echo "  0) 返回主菜单"
+    echo "======================"
+    read -p "请选择 (0-2): " choice </dev/tty
+    echo
+
+    case "$choice" in
+      1) echo "执行：备份数据库..."; bash ./backup_db.sh; read -p "按回车返回..." ;;
+      2) echo "执行：备份配置文件..."; bash ./backup_config.sh; read -p "按回车返回..." ;;
+      0) return ;;
+      *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
+    esac
+  done
+}
+
+# 启动主菜单
+main_menu
