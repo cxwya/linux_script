@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 # ===== 主菜单 =====
 main_menu() {
   while true; do
-    # clear
+    clear
     echo "======================"
     echo "主菜单 - 请选择操作："
     echo "  1) 系统管理"
@@ -32,11 +32,12 @@ main_menu() {
 # ===== 系统管理 =====
 system_menu() {
   while true; do
-    # clear
+    clear
     echo "======================"
     echo "系统管理子菜单："
     echo "  1) 修改 SSH 端口"
     echo "  2) 查看系统信息"
+    echo "  3) 修改时区"
     echo "  0) 返回主菜单"
     echo "======================"
     read -p "请选择 (0-2): " choice </dev/tty
@@ -53,8 +54,13 @@ system_menu() {
         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/system_info.sh | sudo bash
         read -p "按回车返回系统菜单..."
         ;;
+      3)
+        echo "执行：修改时区..."
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/set_timezone.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
       0) return ;;  # return 返回到调用者（主菜单）
-      *) echo "无效选项，按回车重试..."; read -p "" </dev/tty
+      *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
     esac
   done
 }
@@ -62,7 +68,7 @@ system_menu() {
 # ===== Web 服务 =====
 web_menu() {
   while true; do
-    # clear
+    clear
     echo "======================"
     echo "Web 服务菜单："
     echo "  1) 安装 Docker"
@@ -87,7 +93,7 @@ web_menu() {
 # ===== 备份 =====
 backup_menu() {
   while true; do
-    # clear
+    clear
     echo "======================"
     echo "备份管理子菜单："
     echo "  1) 备份数据库"
@@ -109,7 +115,7 @@ backup_menu() {
 # ===== 检测 =====
 detection_menu() {
   while true; do
-    # clear
+    clear
     echo "======================"
     echo "检测脚本："
     echo "  1) 酒神"
