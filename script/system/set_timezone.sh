@@ -51,7 +51,7 @@ show_menu() {
 
 while true; do
     show_menu
-    read -p "👉 请输入对应数字选择时区 [0-8]: " choice
+    read -p "👉 请输入对应数字选择时区 [0-8]: " choice </dev/tty
 
     case $choice in
         1) set_timezone "Asia/Shanghai"; break ;;
