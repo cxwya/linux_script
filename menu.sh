@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 # ===== 主菜单 =====
 main_menu() {
   while true; do
-    clear
+    # clear
     echo "======================"
     echo "主菜单 - 请选择操作："
     echo "  1) 系统管理"
@@ -32,7 +32,7 @@ main_menu() {
 # ===== 系统管理 =====
 system_menu() {
   while true; do
-    clear
+    # clear
     echo "======================"
     echo "系统管理子菜单："
     echo "  1) 修改 SSH 端口"
@@ -68,7 +68,7 @@ system_menu() {
 # ===== Web 服务 =====
 web_menu() {
   while true; do
-    clear
+    # clear
     echo "======================"
     echo "Web 服务菜单："
     echo "  1) 安装 Docker"
@@ -93,7 +93,7 @@ web_menu() {
 # ===== 备份 =====
 backup_menu() {
   while true; do
-    clear
+    # clear
     echo "======================"
     echo "备份管理子菜单："
     echo "  1) 备份数据库"
@@ -115,7 +115,7 @@ backup_menu() {
 # ===== 检测 =====
 detection_menu() {
   while true; do
-    clear
+    # clear
     echo "======================"
     echo "检测脚本："
     echo "  1) 酒神"
