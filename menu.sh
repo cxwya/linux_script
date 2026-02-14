@@ -38,9 +38,11 @@ system_menu() {
     echo "  1) 修改 SSH 端口"
     echo "  2) 查看系统信息"
     echo "  3) 修改时区"
+    echo "  4) BBR 加速管理"
+    echo "  5) Swap 虚拟内存管理"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-2): " choice </dev/tty
+    read -p "请选择 (0-5): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -57,6 +59,16 @@ system_menu() {
       3)
         echo "执行：修改时区..."
         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/set_timezone.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
+      4)
+        echo "执行：BBR 加速管理..."
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/enable_bbr.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
+      5)
+        echo "执行：Swap 虚拟内存管理..."
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/manage_swap.sh | sudo bash
         read -p "按回车返回系统菜单..."
         ;;
       0) return ;;  # return 返回到调用者（主菜单）
