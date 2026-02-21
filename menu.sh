@@ -87,9 +87,10 @@ web_menu() {
     echo "  2) 安装 Docker Compose"
     echo "  3) 安装 Apache"
     echo "  4) 宝塔面板管理"
+    echo "  5) 安装 Komari 探针"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-4): " choice </dev/tty
+    read -p "请选择 (0-5): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -104,6 +105,10 @@ web_menu() {
       3) echo "执行：安装 Apache..."; bash ./install_apache.sh; read -p "按回车返回..." ;;
       4) echo "执行：宝塔面板管理..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/bt_panel_install.sh | sudo bash
+         read -p "按回车返回系统菜单..."
+         ;;
+      5) echo "执行：安装 Komari 探针..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/komari_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
       0) return ;;  # return 到主菜单
