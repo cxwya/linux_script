@@ -135,11 +135,11 @@ backup_menu() {
 
     case "$choice" in
       1) echo "执行：备份数据库..."
-         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup_db.sh | sudo bash
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup/backup_db.sh | sudo bash
          read -p "按回车返回..."
          ;;
       2) echo "执行：备份文件..."
-         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup_file.sh | sudo bash
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup/backup_file.sh | sudo bash
          read -p "按回车返回..."
          ;;
       0) return ;;
