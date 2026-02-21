@@ -84,10 +84,11 @@ web_menu() {
     echo "======================"
     echo "Web 服务菜单："
     echo "  1) 安装 Docker"
-    echo "  2) 安装 Apache"
+    echo "  2) 安装 Docker Compose"
+    echo "  3) 安装 Apache"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-2): " choice </dev/tty
+    read -p "请选择 (0-3): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -95,7 +96,11 @@ web_menu() {
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/docker_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
-      2) echo "执行：安装 Apache..."; bash ./install_apache.sh; read -p "按回车返回..." ;;
+      2) echo "执行：安装 Docker Compose..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/docker_compose_install.sh | sudo bash
+         read -p "按回车返回系统菜单..."
+         ;;
+      3) echo "执行：安装 Apache..."; bash ./install_apache.sh; read -p "按回车返回..." ;;
       0) return ;;  # return 到主菜单
       *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
     esac
