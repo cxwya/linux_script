@@ -17,7 +17,7 @@ while true; do
   fi
   echo
   echo "宝塔面板管理："
-  echo "  1) 安装 宝塔面板 (LTS 稳定版)"
+  echo "  1) 安装 宝塔面板"
   echo "  2) 卸载 宝塔面板"
   echo "  0) 退出"
   echo "======================"
@@ -27,7 +27,7 @@ while true; do
   case "$choice" in
     1)
       echo "执行：安装 宝塔面板..."
-      if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_lts.sh;else wget -O install_lts.sh https://download.bt.cn/install/install_lts.sh;fi;bash install_lts.sh
+      if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec
       read -p "按回车继续..."
       ;;
     2)
