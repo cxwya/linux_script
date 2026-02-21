@@ -26,14 +26,14 @@ while true; do
   case "$choice" in
     1)
       echo "执行：安装 宝塔面板..."
-      wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh && bash install_panel.sh ed8484bec      
-      read -p "按回车继续..."
+      if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec < /dev/tty
+      read -p "按回车继续..." < /dev/tty
       ;;
     2)
       echo "执行：卸载 宝塔面板..."
       # 下载并运行官方卸载脚本
-      wget -O bt-uninstall.sh http://download.bt.cn/install/bt-uninstall.sh && bash bt-uninstall.sh
-      read -p "按回车继续..."
+      wget -O bt-uninstall.sh http://download.bt.cn/install/bt-uninstall.sh && bash bt-uninstall.sh < /dev/tty
+      read -p "按回车继续..." < /dev/tty
       ;;
     0)
       exit 0
