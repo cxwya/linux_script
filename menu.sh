@@ -88,9 +88,10 @@ web_menu() {
     echo "  3) 安装 Apache"
     echo "  4) 宝塔面板管理"
     echo "  5) 安装 Komari 探针"
+    echo "  6) 安装 OpenList"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-5): " choice </dev/tty
+    read -p "请选择 (0-6): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -109,6 +110,10 @@ web_menu() {
          ;;
       5) echo "执行：安装 Komari 探针..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/komari_install.sh | sudo bash
+         read -p "按回车返回系统菜单..."
+         ;;
+      6) echo "执行：安装 OpenList..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/openlist_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
       0) return ;;  # return 到主菜单
