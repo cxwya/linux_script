@@ -16,8 +16,8 @@ fi
 echo "=== OpenList 部署 ==="
 
 # 1. 设置端口
-read -p "请输入宿主机端口 (默认: 5265): " HOST_PORT </dev/tty
-HOST_PORT=${HOST_PORT:-5265}
+read -p "请输入宿主机端口 (默认: 5244): " HOST_PORT </dev/tty
+HOST_PORT=${HOST_PORT:-5244}
 
 # 2. 设置数据目录
 read -p "请输入数据存储目录 (默认: /data/openlist/data): " HOST_DIR </dev/tty
