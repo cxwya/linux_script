@@ -8,7 +8,6 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 while true; do
-  clear
   echo "======================"
   if [ -f "/usr/bin/bt" ] || [ -d "/www/server/panel" ]; then
     echo "当前状态：宝塔面板 [已安装]"
