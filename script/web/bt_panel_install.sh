@@ -26,7 +26,7 @@ while true; do
   case "$choice" in
     1)
       echo "执行：安装 宝塔面板..."
-      if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec
+      wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh && bash install_panel.sh ed8484bec      
       read -p "按回车继续..."
       ;;
     2)
