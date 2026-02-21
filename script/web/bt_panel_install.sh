@@ -21,7 +21,7 @@ while true; do
   echo "  2) 卸载 宝塔面板"
   echo "  0) 退出"
   echo "======================"
-  read -p "请选择 (0-2): " choice </dev/tty ;;
+  read -p "请选择 (0-2): " choice </dev/tty
   echo
 
   case "$choice" in
