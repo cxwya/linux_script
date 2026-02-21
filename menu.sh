@@ -85,13 +85,12 @@ web_menu() {
     echo "Web 服务菜单："
     echo "  1) 安装 Docker"
     echo "  2) 安装 Docker Compose"
-    echo "  3) 安装 Apache"
-    echo "  4) 宝塔面板管理"
-    echo "  5) 安装 Komari 探针"
-    echo "  6) 安装 OpenList"
+    echo "  3) 宝塔面板管理"
+    echo "  4) 安装 Komari 探针"
+    echo "  5) 安装 OpenList"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-6): " choice </dev/tty
+    read -p "请选择 (0-5): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -103,16 +102,15 @@ web_menu() {
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/docker_compose_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
-      3) echo "执行：安装 Apache..."; bash ./install_apache.sh; read -p "按回车返回..." ;;
-      4) echo "执行：宝塔面板管理..."
+      3) echo "执行：宝塔面板管理..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/bt_panel_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
-      5) echo "执行：安装 Komari 探针..."
+      4) echo "执行：安装 Komari 探针..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/komari_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
-      6) echo "执行：安装 OpenList..."
+      5) echo "执行：安装 OpenList..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/openlist_install.sh | sudo bash
          read -p "按回车返回系统菜单..."
          ;;
@@ -129,15 +127,21 @@ backup_menu() {
     echo "======================"
     echo "备份管理子菜单："
     echo "  1) 备份数据库"
-    echo "  2) 备份配置文件"
+    echo "  2) 备份文件"
     echo "  0) 返回主菜单"
     echo "======================"
     read -p "请选择 (0-2): " choice </dev/tty
     echo
 
     case "$choice" in
-      1) echo "执行：备份数据库..."; bash ./backup_db.sh; read -p "按回车返回..." ;;
-      2) echo "执行：备份配置文件..."; bash ./backup_config.sh; read -p "按回车返回..." ;;
+      1) echo "执行：备份数据库..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup_db.sh | sudo bash
+         read -p "按回车返回..."
+         ;;
+      2) echo "执行：备份文件..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/backup_file.sh | sudo bash
+         read -p "按回车返回..."
+         ;;
       0) return ;;
       *) echo "无效选项，按回车重试..."; read -p "" </dev/tty ;;
     esac
