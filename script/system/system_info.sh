@@ -24,8 +24,10 @@ echo "4. 磁盘使用情况："
 df -h | head -5 | sed 's/^/   /'  # 只显示前5行（根分区等）
 echo
 echo "5. 网络信息："
-echo "   IP地址："
+echo "   IPv4 地址："
 ip addr show | grep 'inet ' | grep -v 127.0.0.1 | awk '{print "   " $2}' | cut -d/ -f1 | head -3
+echo "   IPv6 地址："
+ip addr show | grep 'inet6 ' | grep -v '::1/128' | awk '{print "   " $2}' | cut -d/ -f1 | head -3
 echo
 echo "6. 运行进程数："
 echo "   总进程：$(ps aux | wc -l) 个"
