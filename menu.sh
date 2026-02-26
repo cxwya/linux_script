@@ -41,9 +41,10 @@ system_menu() {
     echo "  4) BBR 加速管理"
     echo "  5) Swap 虚拟内存管理"
     echo "  6) IPv6 开关与状态"
+    echo "  7) 修改用户密码"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-6): " choice </dev/tty
+    read -p "请选择 (0-7): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -75,6 +76,11 @@ system_menu() {
       6)
         echo "执行：IPv6 管理..."
         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/manage_ipv6.sh | sudo bash
+        read -p "按回车返回系统菜单..."
+        ;;
+      7)
+        echo "执行：修改用户密码..."
+        curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/system/change_password.sh | sudo bash
         read -p "按回车返回系统菜单..."
         ;;
       0) return ;;  # return 返回到调用者（主菜单）
