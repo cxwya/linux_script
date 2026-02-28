@@ -12,6 +12,7 @@ echo "   主机名：$(hostname)"
 echo "   系统：$(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
 echo "   内核：$(uname -r)"
 echo "   架构：$(uname -m)"
+echo "   时区：$(timedatectl show -p Timezone --value 2>/dev/null || cat /etc/timezone 2>/dev/null || date +%Z)"
 echo
 echo "2. CPU 信息："
 echo "   核心数：$(nproc) 核"
@@ -40,6 +41,16 @@ elif systemctl is-active --quiet ssh 2>/dev/null; then
   echo "   SSH 服务：运行中"
 else
   echo "   SSH 服务：未运行"
+fi
+echo
+echo "8. TCP 拥塞控制 (BBR)："
+cc_algo=$(sysctl net.ipv4.tcp_congestion_control 2>/dev/null | awk '{print $3}')
+qdisc=$(sysctl net.core.default_qdisc 2>/dev/null | awk '{print $3}')
+echo "   TCP 算法：${cc_algo:-未知}"
+if [[ "$cc_algo" == "bbr" ]]; then
+  echo "   BBR 状态：✅ 已启用 (队列: ${qdisc:-未知})"
+else
+  echo "   BBR 状态：❌ 未启用"
 fi
 echo
 echo "======================"
