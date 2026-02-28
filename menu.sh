@@ -184,8 +184,8 @@ detection_menu() {
         read -p "按回车返回..." ;;
       2) 
         echo "执行：融合怪脚本..."; 
-        curl -L https://github.com/spiritLHLS/ecs/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh
-        read -p "按回车返回..." ;;
+        curl -L https://github.com/spiritLHLS/ecs/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh </dev/tty
+        read -r -p "按回车返回..." </dev/tty ;;
       3) 
         echo "执行：YABS脚本..."; 
         curl -sL https://yabs.sh | bash
