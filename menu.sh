@@ -98,7 +98,7 @@ web_menu() {
     echo "  1) 安装 Docker"
     echo "  2) 安装 Docker Compose"
     echo "  3) 宝塔面板管理"
-    echo "  4) 安装 Komari 探针"
+    echo "  4) Komari 管理"
     echo "  5) 安装 OpenList"
     echo "  0) 返回主菜单"
     echo "======================"
@@ -118,8 +118,8 @@ web_menu() {
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/bt_panel_install.sh | sudo bash
          read -p "按回车返回系统菜单..." </dev/tty
          ;;
-      4) echo "执行：安装 Komari 探针..."
-         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/komari_install.sh | sudo bash
+      4) echo "执行：Komari 管理..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/komari.sh | sudo bash
          read -p "按回车返回系统菜单..." </dev/tty
          ;;
       5) echo "执行：安装 OpenList..."
