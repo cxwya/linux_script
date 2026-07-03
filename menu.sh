@@ -100,9 +100,10 @@ web_menu() {
     echo "  3) 宝塔面板管理"
     echo "  4) Komari 管理"
     echo "  5) 安装 OpenList"
+    echo "  6) Docker 日志限制"
     echo "  0) 返回主菜单"
     echo "======================"
-    read -p "请选择 (0-5): " choice </dev/tty
+    read -p "请选择 (0-6): " choice </dev/tty
     echo
 
     case "$choice" in
@@ -124,6 +125,10 @@ web_menu() {
          ;;
       5) echo "执行：安装 OpenList..."
          curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/openlist_install.sh | sudo bash
+         read -p "按回车返回系统菜单..." </dev/tty
+         ;;
+      6) echo "执行：Docker 日志限制..."
+         curl -sL https://raw.githubusercontent.com/cxwya/linux_script/main/script/web/docker_log_limit.sh | sudo bash
          read -p "按回车返回系统菜单..." </dev/tty
          ;;
       0) return ;;  # return 到主菜单
