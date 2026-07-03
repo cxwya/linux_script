@@ -8,6 +8,43 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
+install_pv() {
+  if command -v pv >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo "未检测到 pv，正在自动安装进度条工具..."
+
+  if command -v apt-get >/dev/null 2>&1; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update && apt-get install -y pv
+  elif command -v apt >/dev/null 2>&1; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt update && apt install -y pv
+  elif command -v dnf >/dev/null 2>&1; then
+    dnf install -y pv
+  elif command -v yum >/dev/null 2>&1; then
+    yum install -y pv
+  elif command -v apk >/dev/null 2>&1; then
+    apk add --no-cache pv
+  elif command -v pacman >/dev/null 2>&1; then
+    pacman -Sy --noconfirm pv
+  elif command -v zypper >/dev/null 2>&1; then
+    zypper --non-interactive install pv
+  else
+    echo "未找到支持的包管理器，跳过自动安装 pv。"
+    return 1
+  fi
+
+  if command -v pv >/dev/null 2>&1; then
+    echo "pv 安装成功。"
+    return 0
+  fi
+
+  echo "pv 自动安装失败，将使用普通压缩模式。"
+  return 1
+}
+
 echo "=== 文件夹备份 ==="
 
 # 1. 输入源目录
@@ -50,9 +87,32 @@ echo "目标文件: $FILE_PATH"
 # -C 切换到父目录，然后压缩目录名，防止压缩包内包含绝对路径结构
 PARENT_DIR=$(dirname "$SOURCE_DIR")
 
-tar -czf "$FILE_PATH" -C "$PARENT_DIR" "$DIR_NAME"
+if ! command -v pv >/dev/null 2>&1; then
+  install_pv
+fi
 
-if [ $? -eq 0 ] && [ -s "$FILE_PATH" ]; then
+if command -v pv >/dev/null 2>&1; then
+  echo "正在计算进度条总量..."
+  TAR_STREAM_SIZE=$(tar -cf - -C "$PARENT_DIR" "$DIR_NAME" 2>/dev/null | wc -c | awk '{print $1}')
+else
+  TAR_STREAM_SIZE=""
+fi
+
+if command -v pv >/dev/null 2>&1 && [ -n "$TAR_STREAM_SIZE" ] && [ "$TAR_STREAM_SIZE" -gt 0 ] 2>/dev/null; then
+  echo "正在生成压缩包，进度如下："
+  set -o pipefail
+  tar -cf - -C "$PARENT_DIR" "$DIR_NAME" | pv -pterb -s "$TAR_STREAM_SIZE" | gzip > "$FILE_PATH"
+  TAR_STATUS=$?
+  set +o pipefail
+else
+  if ! command -v pv >/dev/null 2>&1; then
+    echo "提示：未检测到 pv 或自动安装失败，使用普通压缩模式。"
+  fi
+  tar -czf "$FILE_PATH" -C "$PARENT_DIR" "$DIR_NAME"
+  TAR_STATUS=$?
+fi
+
+if [ "$TAR_STATUS" -eq 0 ] && [ -s "$FILE_PATH" ]; then
   echo "✓ 备份成功！"
   echo "文件大小: $(du -h "$FILE_PATH" | awk '{print $1}')"
   
@@ -68,16 +128,28 @@ if [ $? -eq 0 ] && [ -s "$FILE_PATH" ]; then
       HTTP_PORT=${HTTP_PORT:-8000}
       
       # 自动开放防火墙端口
+      FIREWALL_TYPE=""
       if command -v ufw >/dev/null 2>&1 && ufw status | grep -q "Status: active"; then
-        ufw allow "$HTTP_PORT"/tcp >/dev/null 2>&1
-        echo "已通过 UFW 开放端口 $HTTP_PORT"
+        if ufw allow "$HTTP_PORT"/tcp >/dev/null 2>&1; then
+          FIREWALL_TYPE="ufw"
+          echo "已通过 UFW 开放端口 $HTTP_PORT"
+        else
+          echo "警告：UFW 端口开放失败，请手动检查。"
+        fi
       elif command -v firewall-cmd >/dev/null 2>&1 && firewall-cmd --state >/dev/null 2>&1; then
-        firewall-cmd --zone=public --add-port="$HTTP_PORT"/tcp --permanent >/dev/null 2>&1
-        firewall-cmd --reload >/dev/null 2>&1
-        echo "已通过 FirewallD 开放端口 $HTTP_PORT"
+        if firewall-cmd --zone=public --add-port="$HTTP_PORT"/tcp --permanent >/dev/null 2>&1 && firewall-cmd --reload >/dev/null 2>&1; then
+          FIREWALL_TYPE="firewalld"
+          echo "已通过 FirewallD 开放端口 $HTTP_PORT"
+        else
+          echo "警告：FirewallD 端口开放失败，请手动检查。"
+        fi
       elif command -v iptables >/dev/null 2>&1; then
-        iptables -I INPUT -p tcp --dport "$HTTP_PORT" -j ACCEPT >/dev/null 2>&1
-        echo "已通过 iptables 开放端口 $HTTP_PORT (临时)"
+        if iptables -I INPUT -p tcp --dport "$HTTP_PORT" -j ACCEPT >/dev/null 2>&1; then
+          FIREWALL_TYPE="iptables"
+          echo "已通过 iptables 开放端口 $HTTP_PORT (临时)"
+        else
+          echo "警告：iptables 端口开放失败，请手动检查。"
+        fi
       fi
       
       # 获取 IP
@@ -107,8 +179,23 @@ if [ $? -eq 0 ] && [ -s "$FILE_PATH" ]; then
       if [ -n "$PID" ]; then
         echo "HTTP 服务已在后台运行 (PID: $PID)。"
         echo "您可以断开 SSH 连接，服务不会中断。"
-        echo "下载完成后，请运行以下命令停止服务："
+        echo "下载完成后，请按顺序运行以下命令停止服务并清理端口："
         echo "  kill $PID"
+        case "$FIREWALL_TYPE" in
+          ufw)
+            echo "  ufw --force delete allow ${HTTP_PORT}/tcp"
+            ;;
+          firewalld)
+            echo "  firewall-cmd --zone=public --remove-port=${HTTP_PORT}/tcp --permanent"
+            echo "  firewall-cmd --reload"
+            ;;
+          iptables)
+            echo "  iptables -D INPUT -p tcp --dport $HTTP_PORT -j ACCEPT"
+            ;;
+          *)
+            echo "  # 如手动放行过端口，请手动关闭 ${HTTP_PORT}/tcp"
+            ;;
+        esac
       fi
       ;;
     *)
